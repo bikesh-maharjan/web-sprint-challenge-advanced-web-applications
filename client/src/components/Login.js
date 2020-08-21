@@ -13,7 +13,7 @@ const Login = (props) => {
   };
   // make a post request to retrieve a token from the api
   axiosWithAuth()
-    .post("/api/login", credentials)
+    .post("http://localhost:5000/api/login", credentials)
     .then((res) => {
       console.log("res value: ", res);
       // to save the token to localStorage
@@ -22,7 +22,7 @@ const Login = (props) => {
       props.history.push("/bubblepage");
     })
     .catch((err) => {
-      console.log("error:", err);
+      console.log("error:", err.message);
     });
 
   // to update the state when values change
@@ -34,26 +34,24 @@ const Login = (props) => {
 
   // when you have handled the token, navigate to the BubblePage route
   return (
-    <>
-      <form onSubmit={login}>
-        <h1>Login</h1>
-        <input
-          type="text"
-          name="username"
-          placeholder="username"
-          value={credentials.username}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="password"
-          placeholder="password"
-          value={credentials.password}
-          onChange={handleChange}
-        />
-        <button>Log in</button>
-      </form>
-    </>
+    <form onSubmit={login}>
+      <h1>Login</h1>
+      <input
+        type="text"
+        name="username"
+        placeholder="username"
+        value={credentials.username}
+        onChange={handleChange}
+      />
+      <input
+        type="password"
+        name="password"
+        placeholder="password"
+        value={credentials.password}
+        onChange={handleChange}
+      />
+      <button>Log in</button>
+    </form>
   );
 };
 

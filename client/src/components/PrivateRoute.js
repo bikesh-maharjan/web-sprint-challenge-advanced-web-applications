@@ -1,7 +1,6 @@
-import React, { Component } from "react";
+import React from "react";
 
 import { Route, Redirect } from "react-router-dom";
-import BubblePage from "./BubblePage";
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
   return (
@@ -11,7 +10,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
         if (localStorage.getItem("token")) {
           return <Component {...props} />;
         } else {
-          return <Redirect to="/login" />;
+          return <Redirect to="/" />;
         }
       }}
     />
