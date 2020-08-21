@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import axios from "axios";
 
-const Login = () => {
+import { axiosWithAuth } from "../utils/axiosWithAuth";
+
+const Login = (props) => {
   // to store state
   const [credentials, setCredentials] = useState({
     username: "",
@@ -11,8 +12,8 @@ const Login = () => {
     e.preventDefault();
   };
   // make a post request to retrieve a token from the api
-  axios
-    .post("http://localhost:5000/api/login", credentials)
+  axiosWithAuth()
+    .post("/api/login", credentials)
     .then((res) => {
       console.log("res value: ", res);
       // to save the token to localStorage
