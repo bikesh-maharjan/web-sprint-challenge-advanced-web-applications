@@ -2,7 +2,16 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import BubblePage from "./BubblePage";
 
-const colorsData = [
+import axios from "axios";
+
+const randomColors = () => {
+  axios
+    .get("http://localhost:5000/api/colors")
+    .then((res) => setColorList(res.data))
+    .catch((err) => err);
+};
+
+const colorData = [
   {
     color: "aliceblue",
     code: {
@@ -54,19 +63,16 @@ const colorsData = [
   },
 ];
 
-test("Fetches data and renders the bubbles", () => {
-
+test("Fetches data and renders the bubbles", async () => {
   const { getByText } = render(<BubblePage />);
+  randomColors(colorData);
+
+  // const findBisque = screen.findByText(/bisque/i);
+  // expect(findBisque).toBeInTheDocument();
+
   const colors = getByText(/colors/i);
   expect(colors).toBeInTheDocument();
 
   const bubbles = getByText(/bubbles/i);
   expect(bubbles).toBeInTheDocument();
-
-})
-
-
-
-
-
-
+});

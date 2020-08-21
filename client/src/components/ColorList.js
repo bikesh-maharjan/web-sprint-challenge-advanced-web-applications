@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 
+import AddColor from "./AddColor";
+
 const initialColor = {
   color: "",
   code: { hex: "" },
 };
 
 const ColorList = ({ colors, updateColors }) => {
-  console.log(colors);
+  // console.log(colors);
+
   const [editing, setEditing] = useState(false);
   const [colorToEdit, setColorToEdit] = useState(initialColor);
 
@@ -21,12 +24,16 @@ const ColorList = ({ colors, updateColors }) => {
     axiosWithAuth()
       .put(`http://localhost:5000/api/colors/${colorToEdit.id}`, colorToEdit)
       .then((res) => {
-        console.log("===", res.data);
-        updateColors(
-          colors.map((color) => {
-            return color.id === colorToEdit.id ? res.data : color;
-          })
-        );
+        // console.log("===", res.data);
+        const newColorArr = colors.map((color) => {
+          if (color.id === res.data.id) {
+            // return color.id === colorToEdit.id ? res.data : color;
+            return res.data;
+          } else {
+            return color;
+          }
+        });
+        updateColors(newColorArr);
       })
       .catch((err) => console.log(err));
   };
@@ -36,16 +43,14 @@ const ColorList = ({ colors, updateColors }) => {
   // where is is saved right now?
 
   const deleteColor = (color) => {
-    axiosWithAuth()
-      .delete(`http://localhost:5000/api/colors/${color.id}`)
-      .then((res) => {
-        updateColors(colors.filter((e) => e.id !== res.data));
-      })
-      .catch((err) => {
-        console.log("unable to delete color:", err);
-      });
     // make a delete request to delete this color
+    axiosWithAuth().delete(`http://localhost:5000/api/colors/${color.id}`);
+    axiosWithAuth()
+      .get(`http://localhost:5000/api/colors`) // kina pheri get gareko bujehna?
+      .then((res) => updateColors(res.data));
   };
+
+  // make a delete request to delete this color
 
   return (
     <div className="colors-wrap">
@@ -102,7 +107,9 @@ const ColorList = ({ colors, updateColors }) => {
           </div>
         </form>
       )}
+      <AddColor updateColors={updateColors} />
       <div className="spacer" />
+
       {/* stretch - build another form here to add a color */}
     </div>
   );
