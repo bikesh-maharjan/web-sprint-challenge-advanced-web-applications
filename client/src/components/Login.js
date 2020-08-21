@@ -1,29 +1,35 @@
 import React, { useState } from "react";
 
 import { axiosWithAuth } from "../utils/axiosWithAuth";
+import { useHistory } from "react-router-dom";
 
 const Login = (props) => {
+  const history = useHistory();
   // to store state
   const [credentials, setCredentials] = useState({
     username: "",
     password: "",
   });
-  const login = (e) => {
-    e.preventDefault();
-  };
+
   // make a post request to retrieve a token from the api
-  axiosWithAuth()
-    .post("http://localhost:5000/api/login", credentials)
-    .then((res) => {
-      console.log("res value: ", res);
-      // to save the token to localStorage
-      localStorage.setItem("token", res.data.payload);
-      // to redirect to BubblePage
-      props.history.push("/bubblepage");
-    })
-    .catch((err) => {
-      console.log("error:", err.message);
-    });
+  const postInputs = () => {
+    axiosWithAuth()
+      .post("http://localhost:5000/api/login", credentials)
+      .then((res) => {
+        console.log("res value: ", res);
+        // to save the token to localStorage
+        localStorage.setItem("token", res.data.payload);
+        // to redirect to BubblePage
+        history.push("/bubblepage");
+      })
+      .catch((err) => {
+        console.log("error:", err.message);
+      });
+  };
+  const handleLogin = (e) => {
+    e.preventDefault();
+    postInputs();
+  };
 
   // to update the state when values change
 
@@ -34,7 +40,7 @@ const Login = (props) => {
 
   // when you have handled the token, navigate to the BubblePage route
   return (
-    <form onSubmit={login}>
+    <form onSubmit={handleLogin}>
       <h1>Login</h1>
       <input
         type="text"

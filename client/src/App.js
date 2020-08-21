@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import Login from "./components/Login";
@@ -7,10 +7,10 @@ import BubblePage from "./components/BubblePage";
 import "./styles.scss";
 
 function App() {
-  const [colorList, setColorList] = useState([]);
-  const removeColor = (id) => {
-    setColorList(colorList.filter((color) => color.id !== id));
-  };
+  // const [colorList, setColorList] = useState([]);
+  // const removeColor = (id) => {
+  // //   setColorList(colorList.filter((color) => color.id !== id));
+  // };
   return (
     <Router>
       <div className="App">
